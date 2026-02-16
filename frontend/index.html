@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Load Distribution Analyzer - AI-Powered Civil Engineering Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-building"></i>
+        <span>Smart Load Analyzer</span>
+      </div>
+      <div class="user-info" id="userInfo" style="display: none;">
+        <span id="userName"></span>
+        <button onclick="logout()" class="btn-logout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <nav class="nav-menu">
+        <a href="#auth" class="nav-item active" onclick="showSection('auth')">
+          <i class="fas fa-user-lock"></i> Authentication
+        </a>
+        <a href="#survey" class="nav-item" onclick="showSection('survey')">
+          <i class="fas fa-map-marked-alt"></i> Land Survey
+        </a>
+        <a href="#building" class="nav-item" onclick="showSection('building')">
+          <i class="fas fa-building"></i> Building Input
+        </a>
+        <a href="#wind" class="nav-item" onclick="showSection('wind')">
+          <i class="fas fa-wind"></i> Wind Data
+        </a>
+        <a href="#analysis" class="nav-item" onclick="showSection('analysis')">
+          <i class="fas fa-chart-line"></i> Analysis
+        </a>
+        <a href="#reports" class="nav-item" onclick="showSection('reports')">
+          <i class="fas fa-file-alt"></i> Reports
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+
+      <!-- Authentication Section -->
+      <section id="auth-section" class="section active">
+        <div class="section-header">
+          <h2><i class="fas fa-user-lock"></i> Authentication</h2>
+          <p>Register or login to access the platform</p>
+        </div>
+
+        <div class="card">
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab('login')">Login</button>
+            <button class="tab" onclick="switchTab('register')">Register</button>
+          </div>
+
+          <div id="login-form" class="form-container">
+            <div class="form-group">
+              <label><i class="fas fa-envelope"></i> Email</label>
+              <input id="login-email" type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-lock"></i> Password</label>
+              <input id="login-password" type="password" placeholder="Enter your password" required>
+            </div>
+            <button onclick="login()" class="btn btn-primary">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </div>
+
+          <div id="register-form" class="form-container" style="display: none;">
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> Full Name</label>
+              <input id="register-name" type="text" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-envelope"></i> Email</label>
+              <input id="register-email" type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-lock"></i> Password</label>
+              <input id="register-password" type="password" placeholder="Create a password (min 8 characters)" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-user-tag"></i> Role</label>
+              <select id="register-role">
+                <option value="USER">User</option>
+                <option value="ENGINEER">Engineer</option>
+              </select>
+            </div>
+            <button onclick="register()" class="btn btn-primary">
+              <i class="fas fa-user-plus"></i> Register
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Land Survey Section -->
+      <section id="survey-section" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-map-marked-alt"></i> Land Survey</h2>
+          <p>Enter site and soil information</p>
+        </div>
+
+        <div class="card">
+          <h3>Create New Land Survey</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label><i class="fas fa-map-pin"></i> Latitude</label>
+              <input id="survey-lat" type="number" step="0.0001" placeholder="e.g., 28.6139" value="28.6139">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-map-pin"></i> Longitude</label>
+              <input id="survey-lng" type="number" step="0.0001" placeholder="e.g., 77.2090" value="77.2090">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-ruler-combined"></i> Plot Area (sq.m)</label>
+              <input id="survey-area" type="number" placeholder="e.g., 1000" value="1000">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-layer-group"></i> Soil Type</label>
+              <select id="survey-soil">
+                <option value="CLAY">Clay</option>
+                <option value="BLACK_COTTON">Black Cotton</option>
+                <option value="LATERITE">Laterite</option>
+                <option value="SANDY">Sandy</option>
+                <option value="ROCKY">Rocky</option>
+                <option value="ALLUVIAL">Alluvial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-angle-double-up"></i> Slope (degrees)</label>
+              <input id="survey-slope" type="number" step="0.1" placeholder="e.g., 2.5" value="2.5">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-mountain"></i> Elevation (m)</label>
+              <input id="survey-elevation" type="number" placeholder="e.g., 250" value="250">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-water"></i> Water Table Depth (m)</label>
+              <input id="survey-water" type="number" step="0.1" placeholder="e.g., 8.5" value="8.5">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-house-damage"></i> Seismic Zone</label>
+              <select id="survey-seismic">
+                <option value="ZONE_II">Zone II</option>
+                <option value="ZONE_III">Zone III</option>
+                <option value="ZONE_IV" selected>Zone IV</option>
+                <option value="ZONE_V">Zone V</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-tint"></i> Flood Risk</label>
+              <select id="survey-flood">
+                <option value="LOW">Low</option>
+                <option value="MEDIUM" selected>Medium</option>
+                <option value="HIGH">High</option>
+                <option value="VERY_HIGH">Very High</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-water"></i> Nearby Water Bodies</label>
+              <select id="survey-waterbody">
+                <option value="false" selected>No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-ruler"></i> Water Body Distance (m)</label>
+              <input id="survey-waterdist" type="number" placeholder="e.g., 500" value="500">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-cloud-rain"></i> Average Rainfall (mm/year)</label>
+              <input id="survey-rainfall" type="number" placeholder="e.g., 1200" value="1200">
+            </div>
+          </div>
+          <button onclick="createSurvey()" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Create Land Survey
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>My Land Surveys</h3>
+          <button onclick="loadSurveys()" class="btn btn-secondary">
+            <i class="fas fa-sync"></i> Load Surveys
+          </button>
+          <div id="surveys-list" class="list-container"></div>
+        </div>
+      </section>
+
+      <!-- Building Input Section -->
+      <section id="building-section" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-building"></i> Building Input</h2>
+          <p>Define building specifications</p>
+        </div>
+
+        <div class="card">
+          <h3>Create Building Input</h3>
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Select a land survey first
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-map"></i> Select Land Survey</label>
+            <select id="building-survey">
+              <option value="">-- Select Survey --</option>
+            </select>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label><i class="fas fa-building"></i> Building Type</label>
+              <select id="building-type">
+                <option value="RESIDENTIAL" selected>Residential</option>
+                <option value="COMMERCIAL">Commercial</option>
+                <option value="HOSPITAL">Hospital</option>
+                <option value="SCHOOL">School</option>
+                <option value="INDUSTRIAL">Industrial</option>
+                <option value="MIXED_USE">Mixed Use</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-layer-group"></i> Total Floors</label>
+              <input id="building-floors" type="number" placeholder="e.g., 15" value="15">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-arrows-alt-v"></i> Floor Height (m)</label>
+              <input id="building-floorheight" type="number" step="0.1" placeholder="e.g., 3.0" value="3.0">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-ruler-vertical"></i> Total Height (m)</label>
+              <input id="building-height" type="number" step="0.1" placeholder="e.g., 45.0" value="45.0">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-expand"></i> Built-up Area (sq.m)</label>
+              <input id="building-area" type="number" placeholder="e.g., 12000" value="12000">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-compass"></i> Orientation</label>
+              <select id="building-orientation">
+                <option value="NORTH">North</option>
+                <option value="NORTH_EAST" selected>North-East</option>
+                <option value="EAST">East</option>
+                <option value="SOUTH_EAST">South-East</option>
+                <option value="SOUTH">South</option>
+                <option value="SOUTH_WEST">South-West</option>
+                <option value="WEST">West</option>
+                <option value="NORTH_WEST">North-West</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-hard-hat"></i> Structural System</label>
+              <select id="building-structure">
+                <option value="RCC" selected>RCC</option>
+                <option value="STEEL">Steel</option>
+                <option value="COMPOSITE">Composite</option>
+                <option value="LOAD_BEARING">Load Bearing</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-arrow-down"></i> Basement Floors</label>
+              <input id="building-basement" type="number" placeholder="e.g., 2" value="2">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-parking"></i> Parking Floors</label>
+              <input id="building-parking" type="number" placeholder="e.g., 2" value="2">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-users"></i> Expected Occupancy</label>
+              <input id="building-occupancy" type="number" placeholder="e.g., 150" value="150">
+            </div>
+          </div>
+          <button onclick="createBuilding()" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Create Building Input
+          </button>
+        </div>
+      </section>
+
+      <!-- Wind Data Section -->
+      <section id="wind-section" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-wind"></i> Wind Data</h2>
+          <p>Add wind flow and aerodynamics data</p>
+        </div>
+
+        <div class="card">
+          <h3>Add Wind Data</h3>
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Create a building input first
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label><i class="fas fa-compass"></i> Wind Direction (degrees)</label>
+              <input id="wind-direction" type="number" min="0" max="360" placeholder="e.g., 270" value="270">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-wind"></i> Average Wind Speed (m/s)</label>
+              <input id="wind-avgspeed" type="number" step="0.1" placeholder="e.g., 35" value="35">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-bolt"></i> Peak Gust Speed (m/s)</label>
+              <input id="wind-peakspeed" type="number" step="0.1" placeholder="e.g., 55" value="55">
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-mountain"></i> Terrain Roughness</label>
+              <select id="wind-terrain">
+                <option value="CATEGORY_1">Category 1 (Open)</option>
+                <option value="CATEGORY_2" selected>Category 2 (Urban)</option>
+                <option value="CATEGORY_3">Category 3 (Dense Urban)</option>
+                <option value="CATEGORY_4">Category 4 (Very Dense)</option>
+              </select>
+            </div>
+          </div>
+          <button onclick="addWind()" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Add Wind Data
+          </button>
+        </div>
+      </section>
+
+      <!-- Analysis Section -->
+      <section id="analysis-section" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-chart-line"></i> Analysis</h2>
+          <p>Run comprehensive structural and Vastu analysis</p>
+        </div>
+
+        <div class="analysis-grid">
+          <div class="card analysis-card">
+            <div class="analysis-icon disaster">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Disaster Analysis</h3>
+            <p>Earthquake, flood, and cyclone risk assessment with structural recommendations</p>
+            <button onclick="runDisaster()" class="btn btn-primary">
+              <i class="fas fa-play"></i> Run Analysis
+            </button>
+            <button onclick="viewDisasterReport()" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> View Report
+            </button>
+          </div>
+
+          <div class="card analysis-card">
+            <div class="analysis-icon vastu">
+              <i class="fas fa-om"></i>
+            </div>
+            <h3>Vastu Analysis</h3>
+            <p>Vastu Shastra compliance check with corrections and recommendations</p>
+            <button onclick="runVastu()" class="btn btn-primary">
+              <i class="fas fa-play"></i> Run Analysis
+            </button>
+            <button onclick="viewVastuReport()" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> View Report
+            </button>
+          </div>
+
+          <div class="card analysis-card">
+            <div class="analysis-icon report">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>Final Report</h3>
+            <p>Comprehensive report with all analyses, scores, and recommendations</p>
+            <button onclick="generateReport()" class="btn btn-success">
+              <i class="fas fa-file-pdf"></i> Generate Report
+            </button>
+            <button onclick="viewFinalReport()" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> View Report
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports Section -->
+      <section id="reports-section" class="section">
+        <div class="section-header">
+          <h2><i class="fas fa-file-alt"></i> Reports</h2>
+          <p>View detailed analysis reports</p>
+        </div>
+
+        <div class="card">
+          <div id="report-viewer" class="report-viewer">
+            <div class="empty-state">
+              <i class="fas fa-file-alt"></i>
+              <p>No report selected</p>
+              <p class="text-muted">Run an analysis to generate reports</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Output Console -->
+  <div class="console" id="console">
+    <div class="console-header">
+      <span><i class="fas fa-terminal"></i> API Response</span>
+      <button onclick="clearConsole()" class="btn-clear">Clear</button>
+    </div>
+    <pre id="output"></pre>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
