@@ -109,7 +109,7 @@ async function register() {
     const data = await res.json();
     show(data);
 
-    if (data.status === 'success') {
+    if (data.success) {
       showToast('Registration successful! Please login.', 'success');
       switchTab('login');
       document.getElementById('login-email').value = email;
@@ -141,7 +141,7 @@ async function login() {
     const data = await res.json();
     show(data);
 
-    if (data.status === 'success' && data.data.accessToken) {
+    if (data.success && data.data && data.data.accessToken) {
       state.token = data.data.accessToken;
       state.refreshToken = data.data.refreshToken;
       state.user = data.data.user;
