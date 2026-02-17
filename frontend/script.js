@@ -141,18 +141,20 @@ async function login() {
     const data = await res.json();
     show(data);
 
-    if (data.status === 'success' && data.data?.accessToken) {
+    if (data.success && data.data.token) {
 
-      state.token = data.data.accessToken;
-      state.refreshToken = data.data.refreshToken;
-      state.user = data.data.user;
 
-      localStorage.setItem('token', state.token);
-      localStorage.setItem('refreshToken', state.refreshToken);
-      localStorage.setItem('user', JSON.stringify(state.user));
+              state.token = data.data.token;
+        state.refreshToken = data.data.refreshToken;
+        state.user = data.data.user;
 
-      updateUIAfterLogin();
-      showSection('survey');
+        localStorage.setItem('token', state.token);
+        localStorage.setItem('refreshToken', state.refreshToken);
+        localStorage.setItem('user', JSON.stringify(state.user));
+
+        updateUIAfterLogin();
+        showSection('land'); // or 'survey' depending on your section id
+
     } else {
       showToast(data.message || 'Login failed', 'error');
     }
@@ -240,7 +242,7 @@ async function loadSurveys() {
 
   try {
     const res = await fetch(`${API}/land-surveys`, {
-      headers: { "Authorization": "Bearer " + state.token }
+      headers: { Authorization: "Bearer " + state.token }
     });
 
     const data = await res.json();
