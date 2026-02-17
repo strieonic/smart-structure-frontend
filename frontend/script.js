@@ -942,3 +942,5 @@ function getScoreClass(score) {
   if (score >= 40) return 'score-moderate';
   return 'score-poor';
 }
+/ /   r e d e p l o y  
+ 
