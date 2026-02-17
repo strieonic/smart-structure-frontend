@@ -153,7 +153,10 @@ async function login() {
         localStorage.setItem('user', JSON.stringify(state.user));
 
         updateUIAfterLogin();
-        showSection('land'); // or 'survey' depending on your section id
+        showSection('survey'); // or 'survey' depending on your section id
+        document.getElementById('userInfo').style.display = 'flex';
+        document.getElementById('userName').textContent = state.user.name;
+
 
     } else {
       showToast(data.message || 'Login failed', 'error');
