@@ -141,7 +141,8 @@ async function login() {
     const data = await res.json();
     show(data);
 
-    if (data.success && data.data && data.data.accessToken) {
+    if (data.status === 'success' && data.data?.accessToken) {
+
       state.token = data.data.accessToken;
       state.refreshToken = data.data.refreshToken;
       state.user = data.data.user;
