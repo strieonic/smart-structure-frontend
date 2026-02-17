@@ -29,11 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 
 function showSection(sectionName) {
+  // Check if user is logged in for protected sections
+  if (sectionName !== 'auth' && !state.token) {
+    showToast('Please login first to access this section', 'error');
+    sectionName = 'auth';
+  }
+
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   
   document.getElementById(`${sectionName}-section`).classList.add('active');
-  document.querySelector(`[onclick="showSection('${sectionName}')"]`).classList.add('active');
+  const navItem = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+  if (navItem) {
+    navItem.classList.add('active');
+  }
 }
 
 function switchTab(tab) {
@@ -82,6 +91,7 @@ function updateUIAfterLogin() {
   document.getElementById('userInfo').style.display = 'flex';
   document.getElementById('userName').textContent = state.user.name;
   showToast(`Welcome back, ${state.user.name}!`, 'success');
+  loadSurveysIntoDropdown();
 }
 
 // ============================================
@@ -142,22 +152,16 @@ async function login() {
     show(data);
 
     if (data.success && data.data.token) {
+      state.token = data.data.token;
+      state.refreshToken = data.data.refreshToken;
+      state.user = data.data.user;
 
+      localStorage.setItem('token', state.token);
+      localStorage.setItem('refreshToken', state.refreshToken);
+      localStorage.setItem('user', JSON.stringify(state.user));
 
-              state.token = data.data.token;
-        state.refreshToken = data.data.refreshToken;
-        state.user = data.data.user;
-
-        localStorage.setItem('token', state.token);
-        localStorage.setItem('refreshToken', state.refreshToken);
-        localStorage.setItem('user', JSON.stringify(state.user));
-
-        updateUIAfterLogin();
-        showSection('survey'); // or 'survey' depending on your section id
-        document.getElementById('userInfo').style.display = 'flex';
-        document.getElementById('userName').textContent = state.user.name;
-
-
+      updateUIAfterLogin();
+      showSection('survey');
     } else {
       showToast(data.message || 'Login failed', 'error');
     }
